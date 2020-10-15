@@ -1,5 +1,4 @@
 package Hash_Map;
-
 import java.util.ArrayList;
 
 public class MyHashMap<K,V> {
@@ -234,15 +233,29 @@ class MyLinkedHashMap<K,V> {
 		MyLinkedList<K,V> myLinkedList = this.myBucketArray.get(index);
 		if (myLinkedList == null) {
 			myLinkedList = new MyLinkedList<>();
-			//MyMapNode<K,V> myMapNode = new MyMapNode<>(key, value);
 			this.myBucketArray.set(index, myLinkedList);
 		}
-		MyMapNode<K,V> foundKey = (MyMapNode<K,V>) myLinkedList.search(key);
-		if (foundKey == null) {
-			foundKey = new MyMapNode<>(key, value);
-			myLinkedList.append(foundKey);
+		MyMapNode<K,V> myMapNode = (MyMapNode<K,V>) myLinkedList.search(key);
+		if (myMapNode == null) {
+			myMapNode = new MyMapNode<>(key, value);
+			myLinkedList.append(myMapNode);
 		} else {
-			foundKey.setValue(value);
+			myMapNode.setValue(value);
+		}
+	}
+	public MyMapNode<K,V> remove(K key) {
+		int index = this.getBucketIndex(key);
+		MyLinkedList<K,V> myLinkedList = this.myBucketArray.get(index);
+		if (myLinkedList == null) {
+			return null;
+		} else {
+			MyMapNode<K,V> myMapNode = (MyMapNode<K,V>) myLinkedList.search(key);
+			if (myMapNode == null) {
+				return null;
+			} else {
+				myLinkedList.delete(myMapNode);
+				return myMapNode;
+			}
 		}
 	}
 	@Override
